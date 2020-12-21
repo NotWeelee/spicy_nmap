@@ -25,18 +25,21 @@ print("""
 customFile = open('commands.txt', 'r')
 lines = customFile.readlines()
 count = 7
-for line in lines:
+for i in range(0, len(lines)):
     if not line.strip():
         continue
     else:
-        name = re.match('[^,]+', line).group(0)
+        if i == 0:
+            commandOne = re.match('[^,]*$', lines[0]).group(0)
+        elif i == 1:
+            commandOne = re.match('[^,]*$', lines[1]).group(0)
+        elif i == 2:
+            commandOne = re.match('[^,]*$', lines[2]).group(0)
+        name = re.match('[^,]+', lines[i]).group(0)
         print("    {}. {}".format(count, name))
         count = count + 1
 print('')
 
-commandOne = re.match('[^,]*$', line[0]).group(0)
-commandTwo = re.match('[^,]*$', line[1]).group(0)
-commandThree = re.match('[^,]*$', line[2]).group(0)
 
 def menu():
     mike = int(input('Selection: '))
