@@ -74,17 +74,18 @@ def pingScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-n -sP -PE -PA21,23,80,3389')
-        hosts_list = [(x, nm[x]['status']['state']) for x in nm.all_hosts()]
-        for host, status in hosts_list:
-            print('{0}: {1}'.host)
+        nm.scan(target, arguments='-sn')
+
 
 
 def portScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sn -oN /results/Port_Scan.txt')
+        nm.scan(target, arguments='-sn')
+        openPorts = open("open_ports.txt", "w+")
+        for host in nm.all_hosts():
+            openPorts.write("{}. {}\n".format(nm[host].hostname(), nm[host].state()))
 
 
 def allOfTheAbove():
