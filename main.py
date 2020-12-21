@@ -71,43 +71,73 @@ def menu():
 
 
 def pingScan():
-    nm.scan(target, arguments='-sn -oN Ping_Scan.txt')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-sn -oN Ping_Scan.txt')
 
 
 def portScan():
-    nm.scan(target, arguments='-sn -oN Port_Scan.txt')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-sn -oN Port_Scan.txt')
 
 
 def allOfTheAbove():
-    nm.scan(target, arguments='-A -oN Version_OS_NSE_Port_Scan.txt')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-A -oN Version_OS_NSE_Port_Scan.txt')
 
 
 def fastScan():
-    nm.scan(target, arguments='-F -oN Fast_Scan.txt')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-F -oN Fast_Scan.txt')
 
 
 def UDPScan():
-    nm.scan(target, arguments='-sU')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-sU')
 
 
 def NSEScripts():
-    nm.scan(target, arguments='-sC')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-sC')
 
 
 def versionOS():
-    nm.scan(target, arguments='-sV -sO')
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments='-sV -sO')
 
 
 def customOne():
-    nm.scan(target, arguments=commandOne)
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments=commandOne)
 
 
 def customTwo():
-    nm.scan(target, arguments=commandTwo)
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments=commandTwo)
 
 
 def customThree():
-    nm.scan(target, arguments=commandThree)
+    if target == '':
+        print('Please specify hosts in target.txt')
+    else:
+        nm.scan(target, arguments=commandThree)
 
 
 menu()
