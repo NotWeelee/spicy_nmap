@@ -11,7 +11,7 @@ for host in ip:
 targetFile.close()
 
 print("""
-    What type of scan? Decisions, decisions...
+What type of scan do you want to run? Decisions, decisions...
 
     0. Ping Scan
     1. Basic Port Scan
@@ -19,7 +19,8 @@ print("""
     3. UDP Scan
     4. Version/OS Detection
     5. Default NSE Scripts
-    6. Version/OS Detection, NSE, Traceroute, Port Scan
+    6. Custom & Default NSE Scripts
+    7. Version/OS Detection, NSE, Traceroute, Port Scan
 """)
 
 customFile = open('commands.txt', 'r')
@@ -38,7 +39,6 @@ for i in range(0, len(lines)):
         name = re.match('[^,]+', lines[i]).group(0)
         print("    {}. {}".format(count, name))
         count = count + 1
-print('')
 
 
 def menu():
@@ -72,70 +72,73 @@ def menu():
 
 def pingScan():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sn -oN Ping_Scan.txt')
+        nm.scan(target, arguments='-n -sP -PE -PA21,23,80,3389')
+        hosts_list = [(x, nm[x]['status']['state']) for x in nm.all_hosts()]
+        for host, status in hosts_list:
+            print('{0}: {1}'.host)
 
 
 def portScan():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sn -oN Port_Scan.txt')
+        nm.scan(target, arguments='-sn -oN /results/Port_Scan.txt')
 
 
 def allOfTheAbove():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-A -oN Version_OS_NSE_Port_Scan.txt')
+        nm.scan(target, arguments='-A -oN /results/Version_OS_NSE_Port_Scan.txt')
 
 
 def fastScan():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-F -oN Fast_Scan.txt')
+        nm.scan(target, arguments='-F -oN /results/Fast_Scan.txt')
 
 
 def UDPScan():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sU')
+        nm.scan(target, arguments='-sU -oN /results/UDP_Scan.txt')
 
 
 def NSEScripts():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sC')
+        nm.scan(target, arguments='-sC -oN /results/NSE_Scripts.txt')
 
 
 def versionOS():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sV -sO')
+        nm.scan(target, arguments='-sV -sO -oN /results/Version_OS.txt')
 
 
 def customOne():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
         nm.scan(target, arguments=commandOne)
 
 
 def customTwo():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
         nm.scan(target, arguments=commandTwo)
 
 
 def customThree():
     if target == '':
-        print('Please specify hosts in target.txt')
+        print('\nPlease specify hosts in target.txt\n')
     else:
         nm.scan(target, arguments=commandThree)
 
