@@ -4,9 +4,9 @@ import re
 nm = nmap.PortScanner()
 
 targetFile = open('targets.txt', 'r')
-ip = targets.readlines()
+ip = targetFile.readlines()
 target = ''
-for host in targets:
+for host in ip:
     target = target + ', ' + host
 targetFile.close()
 
