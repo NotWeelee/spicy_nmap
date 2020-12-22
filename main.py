@@ -14,12 +14,12 @@ print("""
 What type of scan do you want to run? Decisions, decisions...
 
     0. Ping Scan
-    1. Basic Port Scan
+    1. Port Scan
     2. Fast Scan (Top 100 Ports)
     3. UDP Scan
     4. Version/OS Detection
     5. Default NSE Scripts
-    6. Custom & Default NSE Scripts
+    6. Custom NSE Scripts
     7. Version/OS Detection, NSE, Traceroute, Port Scan
 """)
 
@@ -44,28 +44,44 @@ for i in range(0, len(lines)):
 def menu():
     mike = int(input('Selection: '))
     if mike == 0:
+        print('\n Running...')
         pingScan()
     elif mike == 1:
+        print('\n Running...')
         portScan()
     elif mike == 2:
+        print('\n Running...')
         fastScan()
     elif mike == 3:
+        print('\n Running...')
         UDPScan()
     elif mike == 4:
+        print('\n Running...')
         versionOS()
     elif mike == 5:
+        print('\n Running...')
         NSEScripts()
     elif mike == 6:
+        print('\n Running...')
         allOfTheAbove()
     elif mike == 7:
         if count > 7:
+            print('\n Running...')
             customOne()
+        else:
+            print('Invalid option')
     elif mike == 8:
         if count > 8:
+            print('\n Running...')
             customTwo()
+        else:
+            print('Invalid option')
     elif mike == 9:
         if count > 9:
+            print('\n Running...')
             customTwo()
+        else:
+            print('Invalid option')
     else:
         print('Invalid option')
 
@@ -75,17 +91,30 @@ def pingScan():
         print('\nPlease specify hosts in target.txt\n')
     else:
         nm.scan(target, arguments='-sn')
-
-
+        aliveHosts = open("alive_hosts.txt", "w+")
+        for host in nm.all_hosts():
+            if nm[host].state() == 'up':
+                aliveHosts.write(host + "\n")
+        aliveHosts.close()
 
 def portScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sn')
-        openPorts = open("open_ports.txt", "w+")
+        nm.scan(target)
+        portInfo = open("port_scan.txt", "w+")
         for host in nm.all_hosts():
-            openPorts.write("{}. {}\n".format(nm[host].hostname(), nm[host].state()))
+            portInfo.write("-------------------------------------------------")
+            portInfo.write("Host : {} ({})".format(host, nm[host].hostname()))
+            portInfo.write("State : {}".format(nm[host].state()))
+            portInfo.write("Protocol: {}\n".format(nm[host].all_protocols()))
+            for proto in nm[host].all_protocols():
+                portInfo.write("Protocol: {}".format(proto))
+                lport = nm[host][proto].keys()
+                lport.sort()
+                for port in lport:
+                    portInfo.write("port : {}    state : {}".format(port, nm[host][proto][port]['state']))
+        portInfo.close()
 
 
 def allOfTheAbove():
