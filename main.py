@@ -91,9 +91,9 @@ def pingScan():
         print('\nPlease specify hosts in target.txt\n')
     else:
         nm.scan(target, arguments='-sn')
-        aliveHosts = open("alive_hosts.txt", "w+")
+        aliveHosts = open("alive_hosts.txt", "w")
         for host in nm.all_hosts():
-            if nm[host].state() == 'up':
+            if nm[host].state() is 'up':
                 aliveHosts.write(host + "\n")
         aliveHosts.close()
 
@@ -101,15 +101,14 @@ def portScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target)
-        portInfo = open("port_scan.txt", "w+")
+        nm.scan(target, arguments="-sV")
+        portInfo = open("port_scan.txt", "w")
         for host in nm.all_hosts():
-            portInfo.write("-------------------------------------------------")
-            portInfo.write("Host : {} ({})".format(host, nm[host].hostname()))
-            portInfo.write("State : {}".format(nm[host].state()))
-            portInfo.write("Protocol: {}\n".format(nm[host].all_protocols()))
-            for proto in nm[host].all_protocols():
-                portInfo.write("Protocol: {}".format(proto))
+            if nm[host].state() is 'up':
+                portInfo.write("-------------------------------------------------")
+                portInfo.write("Host : {} ({})".format(host, nm[host].hostname()))
+                portInfo.write("State : {}".format(nm[host].state()))
+                portInfo.write("Protocol: {}\n".format(nm[host].all_protocols()))
                 lport = nm[host][proto].keys()
                 lport.sort()
                 for port in lport:
