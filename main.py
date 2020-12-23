@@ -1,7 +1,7 @@
-import nmap
+import nmap3
 import re
 
-nm = nmap.PortScanner()
+#nm = nmap.PortScanner()
 
 targetFile = open('targets.txt', 'r')
 ip = targetFile.readlines()
@@ -90,86 +90,79 @@ def pingScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments='-sn')
-        aliveHosts = open("alive_hosts.txt", "w")
-        for host in nm.all_hosts():
-            if nm[host].state() is 'up':
-                aliveHosts.write(host + "\n")
+        nmap = nmap3.NmapHostDiscovery()
+        aliveHosts = open("alive_hosts.txt", "w+")
+        aliveDict = nmap.nmap_no_portscan(target)
+        for i in range(0, len(aliveDict.keys()) - 2):
+            aliveHosts.write(str(list(aliveDict.keys())[i]) + '\n')
         aliveHosts.close()
 
 def portScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
     else:
-        nm.scan(target, arguments="-sV")
-        portInfo = open("port_scan.txt", "w")
-        for host in nm.all_hosts():
-            if nm[host].state() is 'up':
-                portInfo.write("-------------------------------------------------")
-                portInfo.write("Host : {} ({})".format(host, nm[host].hostname()))
-                portInfo.write("State : {}".format(nm[host].state()))
-                portInfo.write("Protocol: {}\n".format(nm[host].all_protocols()))
-                lport = nm[host][proto].keys()
-                lport.sort()
-                for port in lport:
-                    portInfo.write("port : {}    state : {}".format(port, nm[host][proto][port]['state']))
-        portInfo.close()
+        nmap = nmap3.NmapHostDiscovery()
+        openPorts = open("open_ports.txt", "w+")
+        openDict = nmap.nmap_portscan_only(target)
+        for i in range(0, len(openDict.keys()['ports'])):
+            openPorts.write(str(list(openDict.keys()[i])))
+        openPorts.close()
 
 
 def allOfTheAbove():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments='-A -oN /results/Version_OS_NSE_Port_Scan.txt')
+    #else:
+
 
 
 def fastScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments='-F -oN /results/Fast_Scan.txt')
+    #else:
+
 
 
 def UDPScan():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments='-sU -oN /results/UDP_Scan.txt')
+    #else:
+
 
 
 def NSEScripts():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments='-sC -oN /results/NSE_Scripts.txt')
+    #else:
+
 
 
 def versionOS():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments='-sV -sO -oN /results/Version_OS.txt')
+    #else:
+
 
 
 def customOne():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments=commandOne)
+    #else:
+
 
 
 def customTwo():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments=commandTwo)
+    #else:
+
 
 
 def customThree():
     if target == '':
         print('\nPlease specify hosts in target.txt\n')
-    else:
-        nm.scan(target, arguments=commandThree)
+    #else:
+
 
 
 menu()
